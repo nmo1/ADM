@@ -14,8 +14,11 @@ infoVar = ['Directed by', 'Produced by', 'Written by', 'Starring', 'Music by', '
 def parse(bf):
     info = infoNA
     infobox = bf.table.find_all('tr')
-    info[:4] = [bf.title.text, bf.find_all('p')[0].text, bf.find_all('p')[1].text, infobox[0].text]
-    
+    info[0] = bf.title.text
+    info[1] = bf.find_all('p')[0].text
+    if len(bf.find_all('p')) > 1:
+        info[2] = bf.find_all('p')[1].text
+    info[3] = infobox[0].text
     for j in range(len(infoVar)):
         for i in range(2, len(infobox)):
                 if infobox[i].th is not None and infoVar[j] == infobox[i].th.text:
@@ -24,11 +27,14 @@ def parse(bf):
         return info
 
 
-for i in range(9999):
-    #if i == 54:
+for i in range(10000):
+    #if i == 130 or i == 1094:
         #continue
     f = open('/home/giorgio/ADM/Homework3/Pages/article_%d.html' % i).read()
     bf = BeautifulSoup(f, 'html.parser')
+    if bf.table is None:
+        print('faild ' + str(i))
+        continue
     infoNA = parse(bf)
 
     with open('/home/giorgio/ADM/Homework3/PagesTSV/output_%d.tsv' % i, 'w') as out_file:
