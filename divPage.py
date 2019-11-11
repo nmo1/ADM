@@ -15,11 +15,11 @@ def parse(bf):
     info = infoNA
     infobox = bf.table.find_all('tr')
     info[:4] = [bf.title.text, bf.find_all('p')[0].text, bf.find_all('p')[1].text, infobox[0].text]
-    # complete the list 'infos' with the available information
+    
     for j in range(len(infoVar)):
         for i in range(2, len(infobox)):
                 if infobox[i].th is not None and infoVar[j] == infobox[i].th.text:
-                    info[j + 4] = infobox[i].td.text  # names in infoVar correspond to those in start[4:]
+                    info[j + 4] = infobox[i].td.text  
                 break
         return info
 
